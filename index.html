@@ -6,9 +6,19 @@
   <title>YouBike 臺北市公共自行車即時資訊</title>
 
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
 
   <style>
     body{ padding: 1em;  }
+
+    button{
+      margin: 0;
+      padding: 0;
+      border: 1px solid transparent; 
+      outline: none; 
+      background-color: #fff;
+    }
   </style>
 
 </head>
@@ -18,19 +28,29 @@
 
   <div id="app">
 
+    <p>
+      站點名稱搜尋: <input type="text" v-model="search">
+    </p>
+
     <table class="table table-striped">
       <thead>
         <tr>
           <th>#</th>
           <th>場站名稱</th>
           <th>場站區域</th>
-          <th>目前可用車輛</th>
-          <th>總停車格</th>
+          <th>目前可用車輛
+            <button @click="setSortType(1)"><i class=" fa fa-sort-asc" aria-hidden="true"></i></button>
+            <button @click="setSortType(2)"><i class="fa fa-sort-desc" aria-hidden="true"></i></i></button>
+          </th>
+          <th>總停車格
+            <button @click="setSortType(3)"><i class=" fa fa-sort-asc" aria-hidden="true"></i></button>
+            <button @click="setSortType(4)"><i class="fa fa-sort-desc" aria-hidden="true"></i></i></button>
+          </th>
           <th>資料更新時間</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="s in ubikeStops">
+        <tr v-for="s in filteredStop" :key="s.sno">
           <td>{{ s.sno }}</td>
           <td>{{ s.sna }}</td>
           <td>{{ s.sarea }}</td>

@@ -1,7 +1,44 @@
 var vm = new Vue({
     el: '#app',
     data: {
-        ubikeStops: []
+        ubikeStops: [],
+        search:'',
+        isSort: false,
+        sortType: 0
+        //1: sbi正, 2:sbi反, 3:tot正, 4:tot反
+    },
+  computed:{
+
+        filteredStop() {
+          const keyword = this.search; //搜尋的 keyword
+          let filteredBike = this.ubikeStops.filter(function (u) {
+            return u.sna.includes(keyword);
+            }
+          )
+
+        // 因 sort 會修改原陣列，所以需要複製一份
+        let cloneUbikeStops = [...filteredBike];
+
+        //判斷排序
+        if (this.sortType !== 0){
+          if (this.sortType === 1){
+            return cloneUbikeStops.sort((a, b) => { return b.sbi - a.sbi; });
+          } else if (this.sortType === 2){
+            return cloneUbikeStops.sort((a, b) => { return a.sbi - b.sbi; });
+          } else if (this.sortType === 3) {
+            return cloneUbikeStops.sort((a, b) => { return b.tot - a.tot; });
+          } else if (this.sortType === 4) {
+            return cloneUbikeStops.sort((a, b) => { return a.tot - b.tot; });
+          }
+        }
+
+      return filteredBike;
+      },
+    },
+    methods:{
+      setSortType(sortType){
+        this.sortType = sortType;
+      }
     },
     filters: {
       timeFormat(t){
